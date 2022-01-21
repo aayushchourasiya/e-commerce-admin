@@ -1,11 +1,12 @@
 import React from 'react'
 import {Container} from 'react-bootstrap'
-function Home() {
+import { MyProducts } from '.'
+export function Home() {
     return (
         <Container>
-            Home
+            <h3 className="mt-5">My Products</h3>
+            <MyProducts/>
         </Container>
     )
 }
 
-export default Home
