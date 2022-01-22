@@ -5,7 +5,7 @@ import { auth, db } from "../../firebase-config";
 import { emailValidation, passwordValidation } from "../../Helpers/Validations";
 import { addDoc, collection } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
-import { updateData } from "../../store/actions";
+import { currentUser, updateData } from "../../store/actions";
 import { useNavigate } from "react-router-dom";
 
 export function Signup() {
@@ -36,12 +36,14 @@ export function Signup() {
               password: password,
               role: "admin",
               fullName: name,
+              myProducts: []
             });
             setEmail("");
             setPassword("");
             setName("");
             setButtonState(false);
             dispatch(updateData(!updateState));
+            dispatch(currentUser(email));
             alert("Account Created!");
             navigate("/");
           })

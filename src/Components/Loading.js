@@ -12,7 +12,7 @@ function Loading() {
         height:'100vh'
       }}
     >
-      <img src={image}/>
+      <img src={image} alt="Loading..."/>
     </Container>
   );
 }

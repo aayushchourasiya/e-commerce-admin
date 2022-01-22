@@ -5,7 +5,7 @@ import { Button, Container, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../../firebase-config";
-import { updateData } from "../../store/actions";
+import { currentUser, updateData } from "../../store/actions";
 
 export function Login() {
   const [email, setEmail] = useState("");
@@ -33,6 +33,7 @@ export function Login() {
         .then(() => {
           navigate("/");
           dispatch(updateData(!updateState));
+          dispatch(currentUser(email));
           setEmail("");
           setPassword("");
           setButtonState(false);
