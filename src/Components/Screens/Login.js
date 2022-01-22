@@ -32,11 +32,11 @@ export function Login() {
       signInWithEmailAndPassword(auth, email, password)
         .then(() => {
           navigate("/");
-          dispatch(updateData(!updateState));
-          dispatch(currentUser(email));
           setEmail("");
           setPassword("");
           setButtonState(false);
+          dispatch(updateData(!updateState));
+          dispatch(currentUser(email));
         })
         .catch((error) => {
           const errorCode = error.code;

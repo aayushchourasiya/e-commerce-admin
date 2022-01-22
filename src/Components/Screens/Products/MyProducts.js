@@ -6,12 +6,12 @@ import { SingleProduct } from ".";
 import { db } from "../../../firebase-config";
 import { AddProduct, ViewProduct } from "../../Modals/";
 
-export function MyProducts() {
+export function MyProducts(props) {
   const [mainData, setMainData] = useState(null);
   const [modalShow, setModalShow] = useState(false);
   const [viewProductShow, setViewProductShow] = useState(false);
 
-  const currentUser = useSelector(state=>state.user);
+  const currentUser = useSelector((state) => state.user);
 
   const [productDetails, setProductDetails] = useState({
     category: "",
@@ -19,7 +19,8 @@ export function MyProducts() {
     quantity: "",
     title: "",
     description: "",
-    item: ""
+    item: "",
+    index: "",
   });
 
   const closeViewProductModal = () => {
@@ -30,7 +31,8 @@ export function MyProducts() {
       quantity: "",
       title: "",
       description: "",
-      item: ""
+      item: "",
+      index: "",
     });
   };
 
@@ -42,18 +44,24 @@ export function MyProducts() {
         .map((doc) => ({ ...doc.data(), id: doc.id }))
         .find((item) => item.email === currentUser);
       setMainData(check);
+      if (check?.myProducts?.length > 0) {
+        props.noProducts(true);
+      } else if(check?.myProducts?.length <= 0) {
+        props.noProducts(false);
+      }
     };
     myFunction();
-  }, [currentUser]);
+  }, [currentUser, props]);
 
-  const viewProduct = (item) => {
+  const viewProduct = (item, index) => {
     setProductDetails({
       image: item.image,
       category: item.category,
       description: item.description,
       quantity: item.quantity,
       title: item.name,
-      item: item
+      item: item,
+      index: index,
     });
     setViewProductShow(true);
   };
@@ -62,10 +70,10 @@ export function MyProducts() {
     <>
       <Container style={{ display: "flex", flexWrap: "wrap" }}>
         {mainData?.myProducts?.length > 0 ? (
-          mainData?.myProducts?.map((item) => {
+          mainData?.myProducts?.map((item, index) => {
             return (
               <SingleProduct
-                key={item.id}
+                key={index}
                 quantity={item.quantity}
                 image={item.image}
                 category={item.category}
@@ -75,7 +83,7 @@ export function MyProducts() {
                     ? item.description.slice(0, 59) + "..."
                     : item.description
                 }
-                onClick={() => viewProduct(item)}
+                onClick={() => viewProduct(item, index)}
               />
             );
           })
@@ -91,7 +99,11 @@ export function MyProducts() {
             </Button>
           </div>
         )}
-        <AddProduct show={modalShow} handleClose={() => setModalShow(false)} />
+        <AddProduct
+          show={modalShow}
+          handleClose={() => setModalShow(false)}
+          updateState={(val) => props.updateState(val)}
+        />
         <ViewProduct
           show={viewProductShow}
           handleClose={() => closeViewProductModal()}
@@ -101,6 +113,8 @@ export function MyProducts() {
           image={productDetails.image}
           title={productDetails.title}
           item={productDetails.item}
+          index={productDetails.index}
+          updateState={(val) => props.updateState(val)}
         />
       </Container>
     </>

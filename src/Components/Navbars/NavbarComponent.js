@@ -37,8 +37,8 @@ function NavbarComponent(props) {
                 <Button
                   onClick={() => {
                     auth.signOut();
-                    dispatch(updateData(!updateState));
                     dispatch(currentUser(null));
+                    dispatch(updateData(!updateState));
                   }}
                   variant="danger"
                 >

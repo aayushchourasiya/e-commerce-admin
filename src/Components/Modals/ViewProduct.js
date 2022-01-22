@@ -1,14 +1,11 @@
 import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
-import { Button, Modal } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { Button, Form, Modal } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { db } from "../../firebase-config";
-import { updateData } from "../../store/actions";
 
 export function ViewProduct(props) {
 
-  const dispatch = useDispatch();
-  const update = useSelector(state=>state.updateData);
   const user = useSelector(state=>state.user);
   const [buttonState,setButtonState] = useState(false);
 
@@ -28,7 +25,8 @@ export function ViewProduct(props) {
       });
       alert("Deleted");
       setButtonState(false);
-      dispatch(updateData(!update));
+      props.handleClose();
+      props.updateState(Math.random());
   }
   return (
     <Modal show={props.show} onHide={props.handleClose}>
@@ -43,7 +41,7 @@ export function ViewProduct(props) {
         />
         <h6>Quantity : {props.quantity}</h6>
         <h6>Category : {props.category}</h6>
-        <h6>{props.description}</h6>
+        <Form.Control as="textarea" rows={props.description.length/500} value={props.description} disabled/>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="danger" onClick={()=>deleteProduct(props.item)} disabled={buttonState}>

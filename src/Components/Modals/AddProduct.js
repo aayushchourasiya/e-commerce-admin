@@ -3,8 +3,7 @@ import React, { useState } from "react";
 import { Form } from "react-bootstrap";
 import { db } from "../../firebase-config";
 import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
-import { useDispatch, useSelector } from "react-redux";
-import { updateData } from "../../store/actions";
+import { useSelector } from "react-redux";
 
 export function AddProduct(props) {
   const [name, setName] = useState("");
@@ -14,8 +13,6 @@ export function AddProduct(props) {
   const [quantity, setQuantity] = useState(0);
   const [buttonState, setButtonState] = useState(false);
   const user = useSelector((state) => state.user);
-  const update = useSelector((state) => state.updateData);
-  const dispatch = useDispatch();
   const categoryChange = (category) => {
     setCategory(category);
     switch (category) {
@@ -56,11 +53,10 @@ export function AddProduct(props) {
         myProducts: [
           ...check?.myProducts,
           {
-            id: check?.myProducts?.length || 0,
             name: name,
             image: image,
             description: description,
-            quantity: quantity,
+            quantity: parseInt(quantity),
             category: category,
           },
         ],
@@ -70,8 +66,10 @@ export function AddProduct(props) {
       setName("");
       setDescription("");
       setImage(null);
+      setQuantity(0);
       setCategory(null);
-      dispatch(updateData(!update));
+      props.handleClose();
+      props.updateState(Math.random())
     } else {
       alert("Please fill up all details!");
       setButtonState(false);
