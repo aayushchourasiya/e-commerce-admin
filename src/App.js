@@ -4,7 +4,13 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Loading from "./Components/Loading";
 import NavbarComponent from "./Components/Navbars/NavbarComponent";
-import { Home, Signup, Login, PageNotFound, Profile } from "./Components/Screens";
+import {
+  Home,
+  Signup,
+  Login,
+  PageNotFound,
+  Profile,
+} from "./Components/Screens";
 import { auth } from "./firebase-config";
 
 function App() {
@@ -15,14 +21,23 @@ function App() {
 
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
+    auth.onAuthStateChanged(() => {
       if (auth.currentUser) {
+        setLoading(false);
         setIsUser(true);
       } else {
+        setLoading(false);
         setIsUser(false);
       }
-      setLoading(false);
-    }, 1000);
+    });
+    // setTimeout(() => {
+    //   if (auth.currentUser) {
+    //     setIsUser(true);
+    //   } else {
+    //     setIsUser(false);
+    //   }
+    //   setLoading(false);
+    // }, 1000);
   }, [update]);
 
   return loading ? (

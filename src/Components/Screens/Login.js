@@ -31,10 +31,10 @@ export function Login() {
     if (check.role === "admin") {
       signInWithEmailAndPassword(auth, email, password)
         .then(() => {
-          navigate("/");
           setEmail("");
           setPassword("");
           setButtonState(false);
+          navigate("/");
           dispatch(updateData(!updateState));
           dispatch(currentUser(email));
         })
