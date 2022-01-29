@@ -5,7 +5,7 @@ import { Button, Container, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../../firebase-config";
-import { updateData } from "../../store/actions";
+import { currentUser, updateData } from "../../store/actions";
 
 export function Login() {
   const [email, setEmail] = useState("");
@@ -31,11 +31,12 @@ export function Login() {
     if (check.role === "admin") {
       signInWithEmailAndPassword(auth, email, password)
         .then(() => {
-          navigate("/");
-          dispatch(updateData(!updateState));
           setEmail("");
           setPassword("");
           setButtonState(false);
+          navigate("/");
+          dispatch(updateData(!updateState));
+          dispatch(currentUser(email));
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -70,6 +71,7 @@ export function Login() {
               setEmail(e.target.value);
               emailMessage.current.innerHTML = "";
             }}
+            disabled={buttonState}
             ref={emailRef}
           />
           <Form.Text className="text-muted" ref={emailMessage}></Form.Text>
@@ -83,6 +85,7 @@ export function Login() {
             placeholder="Enter your password!"
             required
             onChange={(e) => setPassword(e.target.value)}
+            disabled={buttonState}
             ref={passRef}
           />
           <Form.Text className="text-muted" ref={passMessage}></Form.Text>

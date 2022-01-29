@@ -5,7 +5,7 @@ import { auth, db } from "../../firebase-config";
 import { emailValidation, passwordValidation } from "../../Helpers/Validations";
 import { addDoc, collection } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
-import { updateData } from "../../store/actions";
+import { currentUser, updateData } from "../../store/actions";
 import { useNavigate } from "react-router-dom";
 
 export function Signup() {
@@ -36,12 +36,14 @@ export function Signup() {
               password: password,
               role: "admin",
               fullName: name,
+              myProducts: [],
             });
             setEmail("");
             setPassword("");
             setName("");
             setButtonState(false);
             dispatch(updateData(!updateState));
+            dispatch(currentUser(email));
             alert("Account Created!");
             navigate("/");
           })
@@ -81,6 +83,7 @@ export function Signup() {
             type="name"
             placeholder="Enter your full name!"
             onChange={(e) => setName(e.target.value)}
+            disabled={buttonState}
             required
           />
         </Form.Group>
@@ -98,6 +101,7 @@ export function Signup() {
               emailMessage.current.innerHTML =
                 "<p>We'll never share your email with anyone else.</p>";
             }}
+            disabled={buttonState}
             ref={emailRef}
           />
           <Form.Text className="text-muted" ref={emailMessage}>
@@ -114,6 +118,7 @@ export function Signup() {
             placeholder="Enter your password!"
             required
             onChange={(e) => setPassword(e.target.value)}
+            disabled={buttonState}
             ref={passRef}
           />
           <Form.Text className="text-muted" ref={passMessage}></Form.Text>

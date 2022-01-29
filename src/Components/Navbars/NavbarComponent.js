@@ -3,7 +3,7 @@ import { Nav, Navbar, Container, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { auth } from "../../firebase-config";
-import { updateData } from "../../store/actions";
+import { currentUser, updateData } from "../../store/actions";
 
 function NavbarComponent(props) {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ function NavbarComponent(props) {
       <Link to="/" className="navbar-brand mx-4">
         AZ Market
       </Link>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Container>
         <Navbar.Collapse id="basic-navbar-nav">
           {props.noUser ? (
@@ -27,15 +27,17 @@ function NavbarComponent(props) {
             </Nav>
           ) : (
             <>
-              <Nav className="me-auto">
-                <Link to="/" className="nav-link">
-                  Home
+              <Nav
+                className="me-auto"
+                style={{ width: "100%", justifyContent: "flex-end" }}
+              >
+                <Link to="/profile" className="nav-link mx-3">
+                  My Profile
                 </Link>
-              </Nav>
-              <Nav className="me-auto" style={{width:'100%',justifyContent:'flex-end'}}>
                 <Button
                   onClick={() => {
                     auth.signOut();
+                    dispatch(currentUser(null));
                     dispatch(updateData(!updateState));
                   }}
                   variant="danger"
