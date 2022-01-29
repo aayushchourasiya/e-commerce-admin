@@ -11,6 +11,7 @@ export function AddProduct(props) {
   const [category, setCategory] = useState(null);
   const [image, setImage] = useState(null);
   const [quantity, setQuantity] = useState(0);
+  const [price, setPrice] = useState(0);
   const [buttonState, setButtonState] = useState(false);
   const user = useSelector((state) => state.user);
   const categoryChange = (category) => {
@@ -41,7 +42,8 @@ export function AddProduct(props) {
       description !== "" &&
       category &&
       image &&
-      quantity > 0
+      quantity > 0 &&
+      price > 0
     ) {
       const userCollectionRef = collection(db, "Users");
       const data = await getDocs(userCollectionRef);
@@ -53,11 +55,17 @@ export function AddProduct(props) {
         myProducts: [
           ...check?.myProducts,
           {
+            id:
+              category.slice(0, 2) +
+              "-" +
+            Date.now().toString(20).slice(2) +
+            Math.floor(Math.random(100)),
             name: name,
             image: image,
             description: description,
             quantity: parseInt(quantity),
             category: category,
+            price: "Rs " + parseInt(price),
           },
         ],
       });
@@ -68,6 +76,7 @@ export function AddProduct(props) {
       setImage(null);
       setQuantity(0);
       setCategory(null);
+      setPrice(0);
       props.handleClose();
       props.updateState(Math.random());
     } else {
@@ -147,6 +156,19 @@ export function AddProduct(props) {
                 e.target.value <= 0
                   ? setQuantity(0)
                   : setQuantity(e.target.value);
+              }}
+              required
+              disabled={buttonState}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicQuantity">
+            <Form.Label>Product Price (in Rupees)</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Enter product price!"
+              value={price}
+              onChange={(e) => {
+                e.target.value <= 0 ? setPrice(0) : setPrice(e.target.value);
               }}
               required
               disabled={buttonState}

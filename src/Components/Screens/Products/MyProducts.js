@@ -34,6 +34,7 @@ export function MyProducts(props) {
       title: "",
       description: "",
       item: "",
+      price: "",
       index: "",
     });
   };
@@ -63,6 +64,7 @@ export function MyProducts(props) {
       description: item.description,
       quantity: item.quantity,
       title: item.name,
+      price:item.price,
       item: item,
       index: index,
     });
@@ -84,6 +86,7 @@ export function MyProducts(props) {
                   image={item.image}
                   category={item.category}
                   title={item.name}
+                  price={item.price}
                   text={
                     item.description.length > 60
                       ? item.description.slice(0, 59) + "..."
@@ -117,6 +120,7 @@ export function MyProducts(props) {
             description={productDetails.description}
             quantity={productDetails.quantity}
             image={productDetails.image}
+            price={productDetails.price}
             title={productDetails.title}
             item={productDetails.item}
             index={productDetails.index}

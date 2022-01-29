@@ -7,8 +7,7 @@ export function Home(props) {
   const [noProducts, setNoProducts] = useState(true);
   const [updateState, setUpdateState] = useState(false);
 
-  useEffect(() => {
-  }, [updateState]);
+  useEffect(() => {}, [updateState]);
 
   return (
     <Container>

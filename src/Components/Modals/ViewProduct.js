@@ -39,6 +39,7 @@ export function ViewProduct(props) {
           style={{ width: "200px", height: "200px" }}
           alt="Product!"
         />
+        <h5>Price: {props.price}</h5>
         <h6>Quantity : {props.quantity}</h6>
         <h6>Category : {props.category}</h6>
         <Form.Control as="textarea" rows={props.description.length/500} value={props.description} disabled/>

@@ -11,6 +11,7 @@ export function SingleProduct(props) {
         />
       <Card.Body>
         <Card.Title>{props.title}</Card.Title>
+        <h5>Price: {props.price}</h5>
         <h6>Quantity : {props.quantity}</h6>
         <h6 style={{fontSize:'small'}}>Category : {props.category}</h6>
         <Card.Text>{props.text}</Card.Text>
