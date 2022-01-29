@@ -115,6 +115,15 @@ export function Profile() {
           />
           <Form.Text className="text-muted">
             <p>You can't change your E-mail!</p>
+            onChange={(e) => {
+              setEmail(e.target.value);
+              emailMessage.current.innerHTML =
+                "<p>We'll never share your email with anyone else.</p>";
+            }}
+            ref={emailRef}
+          />
+          <Form.Text className="text-muted" ref={emailMessage}>
+            <p>We'll never share your email with anyone else.</p>
           </Form.Text>
         </Form.Group>
 
@@ -162,6 +171,15 @@ export function Profile() {
             onChange={(e) => setNewPassword(e.target.value)}
             ref={passRef}
             onBlur={() => setPasswordState(true)}
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            autoComplete="on"
+            value={password}
+            type="password"
+            placeholder="Enter your password!"
+            required
+            onChange={(e) => setPassword(e.target.value)}
+            ref={passRef}
           />
           <Form.Text className="text-muted" ref={passMessage}></Form.Text>
         </Form.Group>
@@ -172,3 +190,8 @@ export function Profile() {
     </Container>
   );
 }
+      </Form> */}
+      </Container>
+  );
+}
+

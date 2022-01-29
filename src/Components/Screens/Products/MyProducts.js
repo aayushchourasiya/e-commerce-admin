@@ -50,6 +50,9 @@ export function MyProducts(props) {
       if (check?.myProducts?.length > 0) {
         props.noProducts(true);
       } else if (check?.myProducts?.length <= 0) {
+      if (check?.myProducts?.length > 0) {
+        props.noProducts(true);
+      } else if(check?.myProducts?.length <= 0) {
         props.noProducts(false);
       }
     };
@@ -124,6 +127,55 @@ export function MyProducts(props) {
           />
         </Container>
       )}
+      <Container style={{ display: "flex", flexWrap: "wrap" }}>
+        {mainData?.myProducts?.length > 0 ? (
+          mainData?.myProducts?.map((item, index) => {
+            return (
+              <SingleProduct
+                key={index}
+                quantity={item.quantity}
+                image={item.image}
+                category={item.category}
+                title={item.name}
+                text={
+                  item.description.length > 60
+                    ? item.description.slice(0, 59) + "..."
+                    : item.description
+                }
+                onClick={() => viewProduct(item, index)}
+              />
+            );
+          })
+        ) : (
+          <div>
+            <h3 className="mt-5">No Products Found!</h3>
+            <Button
+              variant="dark"
+              className="mt-3"
+              onClick={() => setModalShow(true)}
+            >
+              Add Products
+            </Button>
+          </div>
+        )}
+        <AddProduct
+          show={modalShow}
+          handleClose={() => setModalShow(false)}
+          updateState={(val) => props.updateState(val)}
+        />
+        <ViewProduct
+          show={viewProductShow}
+          handleClose={() => closeViewProductModal()}
+          category={productDetails.category}
+          description={productDetails.description}
+          quantity={productDetails.quantity}
+          image={productDetails.image}
+          title={productDetails.title}
+          item={productDetails.item}
+          index={productDetails.index}
+          updateState={(val) => props.updateState(val)}
+        />
+      </Container>
     </>
   );
 }

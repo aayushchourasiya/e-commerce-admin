@@ -9,7 +9,7 @@ export function ViewProduct(props) {
   const user = useSelector(state=>state.user);
   const [buttonState,setButtonState] = useState(false);
 
-  const deleteProduct = async (mainItem,index) => {
+  const deleteProduct = async (mainItem) => {
     setButtonState(true);
     const userCollectionRef = collection(db, "Users");
       const data = await getDocs(userCollectionRef);
@@ -17,7 +17,7 @@ export function ViewProduct(props) {
         .map((doc) => ({ ...doc.data(), id: doc.id }))
         .find((item) => item.email === user);
       const getDoc = doc(userCollectionRef, check.id);
-      check?.myProducts?.splice(index , 1);
+      check?.myProducts?.splice(mainItem?.id , 1);
       await updateDoc(getDoc, {
         myProducts: [
           ...check?.myProducts,
@@ -44,7 +44,7 @@ export function ViewProduct(props) {
         <Form.Control as="textarea" rows={props.description.length/500} value={props.description} disabled/>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="danger" onClick={()=>deleteProduct(props.item , props.index)} disabled={buttonState}>
+        <Button variant="danger" onClick={()=>deleteProduct(props.item)} disabled={buttonState}>
           Delete Product
         </Button>
         <Button variant="dark" onClick={props.handleClose}>
