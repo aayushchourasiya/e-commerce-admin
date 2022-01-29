@@ -28,6 +28,10 @@ export function Login() {
     const check = data.docs
       .map((doc) => ({ ...doc.data() }))
       .find((item) => item.email === email);
+    if (!check) {
+      alert("Invalid email or password!");
+      setButtonState(false);
+    }
     if (check.role === "admin") {
       signInWithEmailAndPassword(auth, email, password)
         .then(() => {
